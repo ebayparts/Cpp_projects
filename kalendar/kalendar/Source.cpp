@@ -11,50 +11,50 @@ int d1, m1, year1, d2, m2, year2;
 void duration(int d1, int m1, int year1, int d2, int m2, int y2) {
 
 	int diff = 0;
-	if (year1 == year2 && year1%4==0) {//тривал≥сть дн≥в в д≥апазон≥ одного високосного року
+	if (year1 == year2 && year1%4==0) {//duration of days in the range of one leap year
 		for (int i = m1; i < m2 - 1; i++)
 		{
 			diff = diff + daysInMonthLY[i];
 		}
-			diff = diff + d2 + (daysInMonthLY[m1 - 1] - d1); // додаЇмо дн≥ початкового та к≥нцевого м≥с€ц≥в
+			diff = diff + d2 + (daysInMonthLY[m1 - 1] - d1); // adding days of the start and final months
 	}
-	else if (year1 == year2 && year1 % 4 != 0) {//тривал≥сть дн≥в в д≥апазон≥ одного невисокосного року
+	else if (year1 == year2 && year1 % 4 != 0) {//duration of days in the range of one low year
 		for (int i = m1; i < m2 - 1; i++)
 		{
 			diff = diff + daysInMonth[i];
 		}
-		diff = diff + d2 + (daysInMonth[m1 - 1] - d1); // додаЇмо дн≥ початкового та к≥нцевого м≥с€ц≥в
+		diff = diff + d2 + (daysInMonth[m1 - 1] - d1); // adding days of the start and final months
 	}
 	else if (year2 > year1) {
-		if (year1 % 4 == 0) { /////к≥льк≥сть дн≥в до к≥нц€ високосного року
+		if (year1 % 4 == 0) { /////number of days until the end of the leap year
 			for (int i = m1; i < 12; i++)
 			{
 				diff = diff + daysInMonthLY[i];
 			}
 			diff = diff + (daysInMonthLY[m1 - 1] - d1);
 		}
-		else {///к≥льк≥сть дн≥в до к≥нц€ невисокосного року
+		else {///number of days until the end of a low year
 			for (int i = m1; i < 12; i++)
 			{
 				diff = diff + daysInMonth[i];
 			}
 			diff = diff + (daysInMonth[m1 - 1] - d1);
 		}
-		if (year2 % 4 == 0) {/// к≥льк≥сть дн≥в з початку високосного року
+		if (year2 % 4 == 0) {/// number of days from the beginning of the leap year
 			for (int j = 0; j < m2 - 1; j++)
 			{
 				diff = diff + daysInMonthLY[j];
 			}
 			diff = diff + d2;
 		}
-		else {/// к≥льк≥сть дн≥в з початку невисокосного року
+		else {/// the number of days since the beginning of the low year
 			for (int j = 0; j < m2 - 1; j++)
 			{
 				diff = diff + daysInMonth[j];
 			}
 			diff = diff + d2;
 		}
-		for (int k = year1 + 1; k < year2; k++) /// дн≥ кожного року в €ких не рахуЇмо р≥к початку ≥ р≥к зак≥нченн€
+		for (int k = year1 + 1; k < year2; k++) ///days of each year in which we do not count the year of the beginning and the year of the end
 		{
 			if (k % 4 == 0) {
 				for (int l = 0; l < 12; l++)
