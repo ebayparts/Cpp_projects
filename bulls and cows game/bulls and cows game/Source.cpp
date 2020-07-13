@@ -12,7 +12,7 @@ float game() {
     cout << "Lets play in BULLS AND COWS GAME!!" << endl;
     for (int i = 0; i < 4; i++) {
         arr[i] = rand() % 4;
-        cout << " " << arr[i];
+        //cout << " " << arr[i]; // for checking - uncomment this row;
     }
     do {
         cows = 0;
