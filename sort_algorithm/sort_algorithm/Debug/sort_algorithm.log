@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\Admin\source\repos\sort_algorithm\sort_algorithm\Source.cpp(9,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Admin\source\repos\sort_algorithm\sort_algorithm\Source.cpp(668,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  sort_algorithm.vcxproj -> C:\Users\Admin\source\repos\sort_algorithm\Debug\sort_algorithm.exe
