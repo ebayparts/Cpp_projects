@@ -1,63 +1,89 @@
 #include<iostream>
 #include<string>
+#include<conio.h>
+#include <windows.h>
 using namespace std;
 
 const int sizePlanner = 20;
 string planner[sizePlanner];
 string planPriority[sizePlanner];
-int currentIndex = 0; //free space in planner
-int planDate[sizePlanner][3]; // array with dates of all tasks
+int currentIndex = 0;			//free space in planner
+int planDate[sizePlanner][3];		// array with dates of all tasks
 int temp = 0;
 string tempstring;
-// створимо додаткові масиви які будуть копіюватись при введенні і сортуватись при виведенні
 
+// additional array copies for sorting:
 string plannerCopy[sizePlanner];
 string planPriorityCopy[sizePlanner];
 int planDateCopy[sizePlanner][3];
 
+void setColor(int colorNumb)
+{
+	WORD wColor;
+	HANDLE hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO csbi;
+	if (GetConsoleScreenBufferInfo(hStdOut, &csbi))
+	{
+		wColor = (csbi.wAttributes & 0xF0) + (colorNumb & 0x0F);
+		SetConsoleTextAttribute(hStdOut, wColor);
+	}
+	return;
+}
+
 void showTasks() {
 	bool isEmpty = true;
-	for (int i = 0; i < currentIndex; i++) //вивести всі 
+	for (int i = 0; i < currentIndex; i++)
 	{
 		if (planDate[i][0] != 0) {
-			cout << planner[i] << "  " << planDate[i][0] << "." << planDate[i][1] << "." << planDate[i][2];
-			if (planPriority[i] == "c")
-				cout << " --  high priotity" << endl;
-			else if (planPriority[i] == "b")
-				cout << " --  medium priority" << endl;
-			else if (planPriority[i] == "a")
-				cout << " --  low priority" << endl;
+			if (planPriority[i] == "c") {
+				setColor(4);
+				cout << planner[i] << "  " << planDate[i][0] << "." << planDate[i][1] << "." << planDate[i][2] << " --  high priotity" << endl;
+			}
+			else if (planPriority[i] == "b") {
+				setColor(12);
+				cout << planner[i] << "  " << planDate[i][0] << "." << planDate[i][1] << "." << planDate[i][2] << " --  medium priority" << endl;
+			}
+			else if (planPriority[i] == "a") {
+				setColor(2);
+				cout << planner[i] << "  " << planDate[i][0] << "." << planDate[i][1] << "." << planDate[i][2] << " --  low priority" << endl;
+			}
 		}
 		isEmpty = false;
+		setColor(7);
 	}
 	if (isEmpty == true) {
 		cout << "List is empty!" << endl;
 	}
+
 }
 
 void sortTasksbyPriority() {
 	bool isEmpty = true;
-	for (int i = 0; i < sizePlanner; i++) //вивести спочатку всі з С важливістю
+	for (int i = 0; i < sizePlanner; i++)		//	print all with "c" priority
 	{
 		if (planPriority[i] == "c") {
+			setColor(4);
 			cout << planner[i] << "  " << planDate[i][0] << "." << planDate[i][1] << "." << planDate[i][2] << " --  high priotity" << endl;
 			isEmpty = false;
 		}
 	}
-	for (int i = 0; i < sizePlanner; i++) //вивести всі з b важливістю
+	for (int i = 0; i < sizePlanner; i++)		//	print all with "b" priority
 	{
 		if (planPriority[i] == "b") {
+			setColor(12);
 			cout << planner[i] << "  " << planDate[i][0] << "." << planDate[i][1] << "." << planDate[i][2] << " --  medium priority" << endl;
 			isEmpty = false;
 		}
 	}
-	for (int i = 0; i < sizePlanner; i++) //вивести всі з a важливістю
+	for (int i = 0; i < sizePlanner; i++)		//	print all with "a" priority
 	{
 		if (planPriority[i] == "a") {
+			setColor(2);
 			cout << planner[i] << "  " << planDate[i][0] << "." << planDate[i][1] << "." << planDate[i][2] << " --  low priority" << endl;
 			isEmpty = false;
 		}
 	}
+	setColor(7);
 	if (isEmpty == true) {
 		cout << "List is empty!" << endl;
 	}
@@ -70,38 +96,47 @@ void sortTasksbyDate() {			// sorting arrays copy
 	{
 		for (int j = 0; j < currentIndex; j++)
 		{
-			if (planDateCopy[j][2] > planDateCopy[i][2]) {		/// по роках
-				temp = planDateCopy[i][2];						// міняємо роки	
+			if (planDateCopy[j][2] > planDateCopy[i][2]) {		/// sort by years
+				temp = planDateCopy[i][2];						//years
 				planDateCopy[i][2] = planDateCopy[j][2];
 				planDateCopy[j][2] = temp;
-				temp = planDateCopy[i][1];						//місяці
+				temp = planDateCopy[i][1];						//month
 				planDateCopy[i][1] = planDateCopy[j][1];
 				planDateCopy[j][1] = temp;
-				temp = planDateCopy[i][0];						//дні
+				temp = planDateCopy[i][0];						//days
 				planDateCopy[i][0] = planDateCopy[j][0];
 				planDateCopy[j][0] = temp;
-				tempstring = plannerCopy[i];
+				tempstring = plannerCopy[i];					//task title
 				plannerCopy[i] = plannerCopy[j];
 				plannerCopy[j] = tempstring;
+				tempstring = planPriorityCopy[i];				//priority
+				planPriorityCopy[i] = planPriorityCopy[j];
+				planPriorityCopy[j] = tempstring;
 			}
-			else if (planDateCopy[j][1] > planDateCopy[i][1] && planDateCopy[j][2] == planDateCopy[i][2]) {			/// по роках
-				temp = planDateCopy[i][1];						//місяці
+			else if (planDateCopy[j][1] > planDateCopy[i][1] && planDateCopy[j][2] == planDateCopy[i][2]) {			/// sort by month if years are the same
+				temp = planDateCopy[i][1];						//month
 				planDateCopy[i][1] = planDateCopy[j][1];
 				planDateCopy[j][1] = temp;
-				temp = planDateCopy[i][0];						//дні
+				temp = planDateCopy[i][0];						//days
 				planDateCopy[i][0] = planDateCopy[j][0];
 				planDateCopy[j][0] = temp;
-				tempstring = plannerCopy[i];
+				tempstring = plannerCopy[i];					//task title
 				plannerCopy[i] = plannerCopy[j];
 				plannerCopy[j] = tempstring;
+				tempstring = planPriorityCopy[i];				//priority
+				planPriorityCopy[i] = planPriorityCopy[j];
+				planPriorityCopy[j] = tempstring;
 			}
-			else if (planDateCopy[j][0] > planDateCopy[i][0] && planDateCopy[j][1] == planDateCopy[i][1] && planDateCopy[j][2] == planDateCopy[i][2]) {		/// по дням
-				temp = planDateCopy[i][0];						//дні
+			else if (planDateCopy[j][0] > planDateCopy[i][0] && planDateCopy[j][1] == planDateCopy[i][1] && planDateCopy[j][2] == planDateCopy[i][2]) {		/// sort days if month and years are the same
+				temp = planDateCopy[i][0];						//days
 				planDateCopy[i][0] = planDateCopy[j][0];
 				planDateCopy[j][0] = temp;
-				tempstring = plannerCopy[i];
+				tempstring = plannerCopy[i];					//task title
 				plannerCopy[i] = plannerCopy[j];
 				plannerCopy[j] = tempstring;
+				tempstring = planPriorityCopy[i];				//priority
+				planPriorityCopy[i] = planPriorityCopy[j];
+				planPriorityCopy[j] = tempstring;
 			}
 		}
 	}
@@ -109,16 +144,22 @@ void sortTasksbyDate() {			// sorting arrays copy
 	for (int i = 0; i < currentIndex; i++)
 	{
 		if (planDateCopy[i][0] != 0) {
-			cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2];
-			if (planPriorityCopy[i] == "c")
-				cout << " --  high priotity" << endl;
-			else if (planPriorityCopy[i] == "b")
-				cout << " --  medium priority" << endl;
-			else if (planPriorityCopy[i] == "a")
-				cout << " --  low priority" << endl;
+			if (planPriorityCopy[i] == "c") {
+				setColor(4);
+				cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2] << " --  high priotity" << endl;
+			}
+			else if (planPriorityCopy[i] == "b") {
+				setColor(12);
+				cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2] << " --  medium priority" << endl;
+			}
+			else if (planPriorityCopy[i] == "a") {
+				setColor(2);
+				cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2] << " --  low priority" << endl;
+			}
 			bool isEmpty = false;
 		}
 	}
+	setColor(7);
 	if (isEmpty == true) {
 		cout << "List is empty!" << endl;
 	}
@@ -140,19 +181,22 @@ void sortTaskABC() { // sorting arrays copy
 	{
 		for (int j = i + 1; j < currentIndex; j++)
 		{
-			if (plannerCopy[i][0] > plannerCopy[j][0]) {	//міняємо місцями якщо перша буква задачі що стоїть вище, в алфафіті стоїть пізніше
-				tempstring = plannerCopy[i];					//назву
+			if (plannerCopy[i][0] > plannerCopy[j][0]) {		//change if first letter are different
+				tempstring = plannerCopy[i];					//title
 				plannerCopy[i] = plannerCopy[j];
 				plannerCopy[j] = tempstring;
-				temp = planDateCopy[i][0];						//дні
+				temp = planDateCopy[i][0];						//days
 				planDateCopy[i][0] = planDateCopy[j][0];
 				planDateCopy[j][0] = temp;
-				temp1 = planDateCopy[i][1];						//місяці
+				temp1 = planDateCopy[i][1];						//month
 				planDateCopy[i][1] = planDateCopy[j][1];
 				planDateCopy[j][1] = temp1;
-				temp2 = planDateCopy[i][2];						//роки
-				planDateCopy[i][2] = planDateCopy[i][2];
-				planDateCopy[i][2] = temp2;
+				temp2 = planDateCopy[i][2];						//years
+				planDateCopy[i][2] = planDateCopy[j][2];
+				planDateCopy[j][2] = temp2;
+				tempstring = planPriorityCopy[i];				//priority
+				planPriorityCopy[i] = planPriorityCopy[j];
+				planPriorityCopy[j] = tempstring;
 			}
 			else if (plannerCopy[i][0] == plannerCopy[j][0]) {
 				for (int m = 0; m < lenLow;)
@@ -160,22 +204,25 @@ void sortTaskABC() { // sorting arrays copy
 					if (plannerCopy[i][m] == plannerCopy[j][m]) {
 						m++;
 					}
-					else if (plannerCopy[i][m] > plannerCopy[j][m]) {//міняємо місцями якщо перша буква задачі що стоїть вище, в алфафіті стоїть пізніше
-						tempstring = plannerCopy[i];					//назву
+					else if (plannerCopy[i][m] > plannerCopy[j][m]) {	//search wich first letter different and change
+						tempstring = plannerCopy[i];					//title
 						plannerCopy[i] = plannerCopy[j];
 						plannerCopy[j] = tempstring;
-						temp = planDateCopy[i][0];						//дні
+						temp = planDateCopy[i][0];						//days
 						planDateCopy[i][0] = planDateCopy[j][0];
 						planDateCopy[j][0] = temp;
-						temp1 = planDateCopy[i][1];						//місяці
+						temp1 = planDateCopy[i][1];						//month
 						planDateCopy[i][1] = planDateCopy[j][1];
 						planDateCopy[j][1] = temp1;
-						temp2 = planDateCopy[i][2];						//роки
-						planDateCopy[i][2] = planDateCopy[i][2];
-						planDateCopy[i][2] = temp2;
+						temp2 = planDateCopy[i][2];						//years
+						planDateCopy[i][2] = planDateCopy[j][2];
+						planDateCopy[j][2] = temp2;
+						tempstring = planPriorityCopy[i];				//priority
+						planPriorityCopy[i] = planPriorityCopy[j];
+						planPriorityCopy[j] = tempstring;
 						m = lenLow;
 					}
-					else if (plannerCopy[i][m] < plannerCopy[j][m]) {
+					else if (plannerCopy[i][m] < plannerCopy[j][m]) {	//dont change if all are on their places
 						m = lenLow;
 					}
 				}
@@ -185,16 +232,22 @@ void sortTaskABC() { // sorting arrays copy
 	for (int i = 0; i < currentIndex; i++)
 	{
 		if (planDateCopy[i][0] != 0) {
-			cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2];
-			if (planPriorityCopy[i] == "c")
-				cout << " --  high priotity" << endl;
-			else if (planPriorityCopy[i] == "b")
-				cout << " --  medium priority" << endl;
-			else if (planPriorityCopy[i] == "a")
-				cout << " --  low priority" << endl;
+			if (planPriorityCopy[i] == "c") {
+				setColor(4);
+				cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2] << " --  high priotity" << endl;
+			}
+			else if (planPriorityCopy[i] == "b") {
+				setColor(12);
+				cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2] << " --  medium priority" << endl;
+			}
+			else if (planPriorityCopy[i] == "a") {
+				setColor(2);
+				cout << plannerCopy[i] << "  " << planDateCopy[i][0] << "." << planDateCopy[i][1] << "." << planDateCopy[i][2] << " --  low priority" << endl;
+			}
 			isEmpty = false;
 		}
 	}
+	setColor(7);
 	if (isEmpty == true) {
 		cout << "List is empty!" << endl;
 	}
