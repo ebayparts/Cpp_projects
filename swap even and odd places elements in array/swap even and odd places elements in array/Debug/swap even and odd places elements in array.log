@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\Admin\source\repos\swap even and odd places elements in array\swap even and odd places elements in array\Source.cpp(16,31): warning C4554: "&": проверьте приоритет операторов на ошибки; для уточнения приоритета используйте скобки
+C:\Users\Admin\source\repos\swap even and odd places elements in array\swap even and odd places elements in array\Source.cpp(13,6): warning C4101: indexMin: неиспользованная локальная переменная
+  swap even and odd places elements in array.vcxproj -> C:\Users\Admin\source\repos\swap even and odd places elements in array\Debug\swap even and odd places elements in array.exe
