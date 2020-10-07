@@ -1,0 +1,4 @@
+﻿  Source.cpp
+C:\Users\Александр\source\repos\dynamicArray\dynamicArray\Source.cpp(5,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+C:\Users\Александр\source\repos\dynamicArray\dynamicArray\Source.cpp(63,12): warning C4244: аргумент: преобразование "time_t" в "unsigned int", возможна потеря данных
+  dynamicArray.vcxproj -> C:\Users\Александр\source\repos\dynamicArray\Debug\dynamicArray.exe
