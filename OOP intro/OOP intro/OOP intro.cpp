@@ -55,23 +55,23 @@ public:
 			cout << "Enter day : ";
 			cin >> day;
 		}
-		
+
 	private:
 		size_t day = 1, month = 1, year = 2000;
 	};
 	static const size_t maxAge = 120;
 	void print() {
 		cout << "Thats the information that you have entered :" << endl;
-		cout << "Name: " << setw(maxLengthOfAllStrings+15) << name << endl;
-		cout << "Surname: " << setw(maxLengthOfAllStrings+12) << surname << endl;
-		birth.print((int)maxLengthOfAllStrings+4);
-		cout << "Phone: " << setw(maxLengthOfAllStrings+14) << phone << endl;
-		cout << "City: " << setw(maxLengthOfAllStrings +15) << city << endl;
-		cout << "Country: " << setw(maxLengthOfAllStrings+12) << country << endl;
-		cout << "Univercity: " << setw(maxLengthOfAllStrings+9) << university << endl;
-		cout << "Univercity city: " << setw(maxLengthOfAllStrings+4) << cityUniversity << endl;
-		cout << "Univercity country: " << setw(maxLengthOfAllStrings+1) << countryUniversity << endl;
-		cout << "Group number: " << setw(maxLengthOfAllStrings+7) << groupNumber << endl;
+		cout << "Name: " << setw(maxLengthOfAllStrings + 15) << name << endl;
+		cout << "Surname: " << setw(maxLengthOfAllStrings + 12) << surname << endl;
+		birth.print((int)maxLengthOfAllStrings + 4);
+		cout << "Phone: " << setw(maxLengthOfAllStrings + 14) << phone << endl;
+		cout << "City: " << setw(maxLengthOfAllStrings + 15) << city << endl;
+		cout << "Country: " << setw(maxLengthOfAllStrings + 12) << country << endl;
+		cout << "Univercity: " << setw(maxLengthOfAllStrings + 9) << university << endl;
+		cout << "Univercity city: " << setw(maxLengthOfAllStrings + 4) << cityUniversity << endl;
+		cout << "Univercity country: " << setw(maxLengthOfAllStrings + 1) << countryUniversity << endl;
+		cout << "Group number: " << setw(maxLengthOfAllStrings + 7) << groupNumber << endl;
 	}
 	void setName(const string& newName)
 	{
@@ -79,7 +79,7 @@ public:
 			name = newName;
 		}
 	}
-	string& getName()
+	const string& getName() const
 	{
 		return name;
 	}
@@ -96,10 +96,29 @@ public:
 	void setPhone(const string& newPhone)
 	{
 		if (!newPhone.empty()) {
-			phone = newPhone;
+			const char* stringToChar = newPhone.c_str(); // < - I googled this.
+			int digitsInString = 0;
+			for (size_t i = 0; i < newPhone.length(); i++)
+			{
+				if (isdigit(stringToChar[i]))
+					digitsInString++;
+			}
+			if (digitsInString == newPhone.length())
+			{
+				if (stod(newPhone) > 100000000 && stod(newPhone) < 1000000000000)
+				{
+					phone = newPhone;
+					maxLengthOfAllStrings = (maxLengthOfAllStrings < phone.length()) ? phone.length() : maxLengthOfAllStrings;
+				}
+				else
+					cout << "Not correct phone format (from 9 to 12 digits only)" << endl;
+			}
+			else
+				cout << "Not correct phone format (from 9 to 12 digits only)" << endl;
+			//	delete [] stringToChar; <-cant delete .c_str(), string will control livelong of itself
 		}
 	}
-	string& getPhone()
+	const string& getPhone() const
 	{
 		return phone;
 	}
@@ -109,7 +128,7 @@ public:
 			city = newCity;
 		}
 	}
-	string& getCity()
+	const string& getCity() const
 	{
 		return city;
 	}
@@ -119,7 +138,7 @@ public:
 			country = newCountry;
 		}
 	}
-	string& getCountry()
+	const string& getCountry() const
 	{
 		return country;
 	}
@@ -129,7 +148,7 @@ public:
 			university = newUniversity;
 		}
 	}
-	string& getUnivercity()
+	const string& getUnivercity() const
 	{
 		return university;
 	}
@@ -139,7 +158,7 @@ public:
 			cityUniversity = newCityUniversity;
 		}
 	}
-	string& getCityUniversity()
+	const string& getCityUniversity() const
 	{
 		return cityUniversity;
 	}
@@ -149,7 +168,7 @@ public:
 			countryUniversity = newCountryUniversity;
 		}
 	}
-	string& getCountryUniversity()
+	const string& getCountryUniversity() const
 	{
 		return countryUniversity;
 	}
@@ -159,12 +178,15 @@ public:
 			groupNumber = newGroupNumber;
 		}
 	}
-	string& getGroupNumber()
+	const string& getGroupNumber() const
 	{
 		return groupNumber;
 	}
 	void setBirth(const DateOfBirth& birth) {
 		this->birth = birth;
+	}
+	void checkPhone(const string& newPhone) {
+
 	}
 	void input() {
 		cout << "Please enter your information carefully :" << endl;
@@ -175,34 +197,10 @@ public:
 		cin >> surname;
 		maxLengthOfAllStrings = (maxLengthOfAllStrings < surname.length()) ? surname.length() : maxLengthOfAllStrings;
 		birth.input();
-
-		/// Entering phone
-		/// <summary>
-		/// programm does not assign entered number if it have less than 9 characters (988846844)
-		/// or more than 12 (380988846844), AND it accepts numbers only.
-		/// </summary>
 		string newPhone;
 		cout << "Enter your phone: ";
 		cin >> newPhone;
-		const char* stringToChar = newPhone.c_str(); // < - I googled this.
-		int digitsInString = 0;
-		for (size_t i = 0; i < newPhone.length(); i++)
-		{
-			if (isdigit(stringToChar[i]))
-				digitsInString++;
-		}
-		if (digitsInString == newPhone.length())
-		{
-			if (stod(newPhone) > 100000000 && stod(newPhone) < 1000000000000)
-			{
-				phone = newPhone;
-				maxLengthOfAllStrings = (maxLengthOfAllStrings < phone.length()) ? phone.length() : maxLengthOfAllStrings;
-			}
-			else
-				cout << "Not correct phone format (from 9 to 12 digits only)" << endl;
-		}
-		else
-			cout << "Not correct phone format (from 9 to 12 digits only)" << endl;
+		setPhone(newPhone);
 		cout << "Enter your city: ";
 		cin >> city;
 		maxLengthOfAllStrings = (maxLengthOfAllStrings < city.length()) ? city.length() : maxLengthOfAllStrings;
@@ -222,7 +220,7 @@ public:
 		cin >> groupNumber;
 		maxLengthOfAllStrings = (maxLengthOfAllStrings < groupNumber.length()) ? groupNumber.length() : maxLengthOfAllStrings;
 	}
-	long long maxLengthOfAllStrings=0;
+	long long maxLengthOfAllStrings = 0;
 private: //incapsulation
 	string name = "NoName";
 	string surname = "NoSurname";
